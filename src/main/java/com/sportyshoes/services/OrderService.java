@@ -34,13 +34,17 @@ public class OrderService {
 		od.getOrderNum();
 		orderRepository.save(od);
 		
-		if(orderRepository.save(od) != null) {
+		if(orderRepository.save(od)== null) {
+			return false;
+		}else {
 			return true;
-		}else return false;
+		}
 	}
 	
 	public List<Orders> getAllOrders() {
 		return (List<Orders>) orderRepository.findAll();
 	}
+	
+	
 
 }

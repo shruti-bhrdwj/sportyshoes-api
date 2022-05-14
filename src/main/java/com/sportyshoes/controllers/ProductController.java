@@ -85,8 +85,8 @@ public class ProductController {
 	public String productPurchase(@RequestParam int pId, @RequestParam int uId) {
 		if(orderService.buyProduct(pId, uId)){
 			return "The product has been bought successfully";
-		} else 
-			return "Error: Request denied! Wrong productId or UserId";
+		} else {
+			return "Request denied!";}
 	}
 	
 }

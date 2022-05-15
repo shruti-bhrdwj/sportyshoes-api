@@ -5,19 +5,18 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.sportyshoes.models.User;
+import com.sportyshoes.services.OrderService;
 import com.sportyshoes.services.UserService;
 
 
@@ -28,45 +27,73 @@ public class UserController {
 	@Autowired
 	private UserService userService;
 	
-	@PostMapping("/login")
-	public String userLogin(@RequestParam String name, @RequestParam String password)
-	{
+	@Autowired
+	private OrderService orderService;
+	
+	@PostMapping("/signIn")
+	public String userLogin(@RequestParam String name, @RequestParam String password) {
 		if(userService.userAuth(name, password)){
 			return "Logged in Successfully";
 		} else 
 			return "Login Failed";
 	}
 	
-	//working
-	@GetMapping("/all")
-	public List<User> getUsers()
+	@PostMapping("/signUp")
+	public ResponseEntity<User> createUser(@RequestParam String name, @RequestParam String password)
 	{
+		User user= userService.addUser(name, password);
+		return new ResponseEntity<>(user,HttpStatus.CREATED);
+	}
+	
+	@GetMapping("/all")
+	public List<User> getUsers() {
 		return userService.getAllUsers();
 	}
 	
-	//working
-	@GetMapping("/id={userID}")
-	public User getUser(@PathVariable("userID") String id) {
-		return userService.findUserById(id);
+	@GetMapping("/{userID}")
+	public User viweDetails(@PathVariable("userID") String id) {
+			return userService.findUserById(id);	
 	}
 	
-	//working
-	@DeleteMapping("/delete/{userID}")
-	public String deleteUser(@PathVariable("userID") int userID)
+	@PostMapping("/{userID}/product/{productID}/order")
+	public String productPurchase(@PathVariable("productID") int pId, @PathVariable("userID") int uId) {
+		if(orderService.buyProduct(pId, uId)){
+			return "The product is ordered successfully";
+		} else {
+			return "Request denied!";}
+	}
+	
+	@PatchMapping("/{id}/update/password")
+	public String changePassword(@PathVariable("id") int id,@RequestParam String newPassword)
 	{
-		userService.deleteUser(userID);
-		return "User deleted successfully.";
+		if(userService.changePassword(id, newPassword))
+		{
+			return "Password changed successfully";
+		}
+		else
+			return "Request Failed";
 	}
 	
-	@PutMapping(path="/update/{userID}",
-			consumes = MediaType.APPLICATION_JSON_VALUE, 
-	        produces = MediaType.APPLICATION_JSON_VALUE)
-	public String updateUser(@PathVariable("userID") String id, @RequestBody User newUser)
+	@PatchMapping("/{id}/update/name")
+	public String changeName(@PathVariable("id") int id,@RequestParam String newPassword)
 	{
-		userService.updateUser(id, newUser);
-		return "User updated successfully.";
+		if(userService.changeName(id, newPassword))
+		{
+			return "Name changed successfully";
+		}
+		else
+			return "Request Failed";
+		
 	}
 	
+//	@PutMapping(path="/update/{userID}",
+//			consumes = MediaType.APPLICATION_JSON_VALUE, 
+//	        produces = MediaType.APPLICATION_JSON_VALUE)
+//	public String updateUser(@PathVariable("userID") String id, @RequestBody User newUser)
+//	{
+//		userService.updateUser(id, newUser);
+//		return "User updated successfully.";
+//	}
 	
 //	@PostMapping(path = "/create", 
 //	        consumes = MediaType.APPLICATION_JSON_VALUE, 
@@ -77,11 +104,18 @@ public class UserController {
 //		return new ResponseEntity<>(user,HttpStatus.CREATED);
 //	}
 	
-	@PostMapping("/create")
-	public ResponseEntity<User> createUser(@RequestParam String name, @RequestParam String password)
+	
+	@DeleteMapping("/{userID}/delete/")
+	public String deleteAccount(@PathVariable("userID") int userID)
 	{
-		User user= userService.addUser(name, password);
-		return new ResponseEntity<>(user,HttpStatus.CREATED);
+		userService.deleteUser(userID);
+		return "Account deleted successfully.";
+	}
+	
+	@GetMapping("/")
+	public List<User> getUserByName(@RequestParam String vendorName)
+	{
+		return userService.findUserByName(vendorName);
 	}
 	
 }

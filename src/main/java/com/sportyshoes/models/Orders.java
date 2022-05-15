@@ -2,18 +2,21 @@ package com.sportyshoes.models;
 
 import java.sql.Timestamp;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToOne;
+import javax.persistence.JoinColumn;
+//import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.UpdateTimestamp;
 
 @Entity
-@Table(name="orders")
+@Table(name="customer_orders")
 public class Orders {
 	
 	@Id
@@ -26,11 +29,15 @@ public class Orders {
 	@UpdateTimestamp
 	private Timestamp date;
 	
-	@ManyToOne
-	private User user;
+	//@ManyToOne
+	@OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "BY_USER", referencedColumnName = "USER_ID")
+    private User user;
 	
-	@ManyToOne
-	private Product product;
+	//@ManyToOne
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "PRODUCT_ID", referencedColumnName = "PRODUCT_ID")
+    private Product product;
 	
 	public Orders() {}
 

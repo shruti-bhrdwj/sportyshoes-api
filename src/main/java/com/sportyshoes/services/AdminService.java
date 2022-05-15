@@ -31,11 +31,14 @@ public class AdminService {
 		return admRepository.findById(Id).get();
 	}
 	
-	public void changePassword(int id, String newPassword)
+	public boolean changePassword(int id, String newPassword)
 	{
 		Admin admin = admRepository.findById(id).get();
 		admin.setAdminPwd(newPassword);
 		admRepository.save(admin);
-		System.out.println("Password Changed Successfully.");
+		
+		if(admRepository.findById(id).get().getAdminPwd().equals(newPassword)) {
+			return true;
+		}else return false;
 	}
 }

@@ -54,15 +54,44 @@ public class ProductService {
 		return productRepository.save(product);
 	}
 
-	public Product updateProduct(int pId,Product product ) {
-		Product pr=productRepository.findById(pId).get();
-		if(pr.getProductId()==pId) {
-			productRepository.save(product);
-		}else {
-			System.out.println("Error: Invalid ProductID");
-		}
-		return product;
+	public boolean changePname(int id, String updatedName) {
+		Product pr = productRepository.findById(id).get();
+		pr.setPname(updatedName);
+		productRepository.save(pr);
+		
+		if(productRepository.findById(id).get().getPname().equals(updatedName)) {
+			return true;
+		}else return false;
 	}
 
+	public boolean changeMSRP(int id, double updatedMSRP) {
+		Product pr = productRepository.findById(id).get();
+		pr.setMsrp(updatedMSRP);
+		productRepository.save(pr);
+		
+		if(productRepository.findById(id).get().getMsrp()== updatedMSRP) {
+			return true;
+		}else return false;
+	}
+
+	public boolean changeVendorInfo(int id, String newVendor) {
+		Product pr = productRepository.findById(id).get();
+		pr.setVendorInfo(newVendor);
+		productRepository.save(pr);
+		
+		if(productRepository.findById(id).get().getVendorInfo().equals(newVendor)) {
+			return true;
+		}else return false;
+		
+	}
+//	public Product updateProduct(int pId,Product product ) {
+//	  Product pr=productRepository.findById(pId).get();
+//	  if(pr.getProductId()==pId) {
+//		  productRepository.save(product);
+//	      }else {
+//		     System.out.println("Error: Invalid ProductID");
+//	  }
+//	  return product;
+//   }
 
 }

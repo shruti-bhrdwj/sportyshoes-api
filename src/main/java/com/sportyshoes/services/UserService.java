@@ -1,5 +1,6 @@
 package com.sportyshoes.services;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,17 +17,14 @@ public class UserService {
 	
 	public boolean userAuth(String name, String pwd) {
 			List<User> users = (List<User>) userRepository.findAll();
-			for(User us : users)
-			{
-				if(us.getUname().equals(name) && us.getUserpwd().equals(pwd)) 
-				{
+			for(User us : users) {
+				if(us.getUname().equals(name) && us.getUserpwd().equals(pwd)) {
 					return true;
 				}
 			}
 			return false;
-		}
+	}
 	
-
 	public List<User> getAllUsers() {
 	     return (List<User>) userRepository.findAll();
 	}
@@ -40,11 +38,11 @@ public class UserService {
 //		return userRepository.save(user);
 //	}
 	
-	public void updateUser(String userid,User user ) {
-		int id = Integer.parseInt(userid);
-		User us=userRepository.findById(id).get();
-		if(us.getUserid()==id) userRepository.save(user);
-	}
+//	public void updateUser(String userid,User user ) {
+//		int id = Integer.parseInt(userid);
+//		User us=userRepository.findById(id).get();
+//		if(us.getUserid()==id) userRepository.save(user);
+//	}
 	
 	public void deleteUser(int id) {
 		userRepository.deleteById(id);
@@ -57,50 +55,38 @@ public class UserService {
 		us.setUserpwd(password);
 		return userRepository.save(us);
 	}
-	
-//	public void updateUser(int id, String name, String pwd) {
-//		Optional<User> optional = userRepository.findById(id);
-//		User usr = optional.get();
-//		if(usr.getUserid()==id) {
-//			usr.setUname(name);
-//			usr.setUserpwd(pwd);
-//		}else {
-//			System.out.println("Invalid userID");
-//		}
-//	}
+
+
+	public boolean changePassword(int id, String newPassword) {
+		User us = userRepository.findById(id).get();
+		us.setUserpwd(newPassword);
+		userRepository.save(us);
 		
-//	public User findUser(int userid) {
-//	User user = new User();
-//	User searchedUser = (User) userRepository.findAll();
-//	if( searchedUser.getUserid() == userid)
-//	{
-//		user.getUname();
-//		user.getUserid();
-//		user.getUserpwd();
-//	}
-//	return user;
-//	}
+		if(userRepository.findById(id).get().getUserpwd().equals(newPassword)) {
+			return true;
+		}else return false;
+	}
 
-	
-//	public User addUser(int userid, String name, String pwd) {
-//		User usr = new User();
-//		usr.setUname(name);
-//		usr.setUserid(userid);
-//		usr.setUserpwd(pwd);
-//		return userRepository.save(usr);
-//	}
 
-//	public void updateUser(int id,String name, String pwd) {
-//		Optional<User> optional = userRepository.findById(id);
-//		User usr = optional.get();
-//		if(usr.getUserid()==id && optional.isPresent()) {
-//		  if() {
-//			usr.setUname(name);
-//			usr.setUserpwd(pwd);
-//		}else {
-//			System.out.println("Invalid userID");
-//		}
-//		
-//	}
+	public boolean changeName(int id, String name) {
+		User us = userRepository.findById(id).get();
+		us.setUname(name);
+		userRepository.save(us);
+		
+		if(userRepository.findById(id).get().getUname().equals(name)) {
+			return true;
+		}else return false;
+	}
+
+	public List<User> findUserByName(String uname) {
+		List<User> list = (List<User>) userRepository.findAll();
+		List<User> listByName = new ArrayList<>();
+		for (User us : list) {
+			if(us.getUname().toLowerCase().contains(uname.toLowerCase())) {
+				listByName.add(us);
+			}
+		}
+		return listByName;
+	}	
 
 }

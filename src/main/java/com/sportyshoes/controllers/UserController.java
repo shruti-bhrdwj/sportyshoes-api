@@ -1,8 +1,5 @@
 package com.sportyshoes.controllers;
 
-
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -30,6 +27,13 @@ public class UserController {
 	@Autowired
 	private OrderService orderService;
 	
+	@PostMapping("/signUp")
+	public ResponseEntity<User> createUser(@RequestParam String name, @RequestParam String password)
+	{
+		User user= userService.addUser(name, password);
+		return new ResponseEntity<>(user,HttpStatus.CREATED);
+	}
+	
 	@PostMapping("/signIn")
 	public String userLogin(@RequestParam String name, @RequestParam String password) {
 		if(userService.userAuth(name, password)){
@@ -38,20 +42,13 @@ public class UserController {
 			return "Login Failed";
 	}
 	
-	@PostMapping("/signUp")
-	public ResponseEntity<User> createUser(@RequestParam String name, @RequestParam String password)
-	{
-		User user= userService.addUser(name, password);
-		return new ResponseEntity<>(user,HttpStatus.CREATED);
-	}
-	
 	@GetMapping("/all")
-	public List<User> getUsers() {
+	public String getUsers() {
 		return userService.getAllUsers();
 	}
 	
 	@GetMapping("/{userID}")
-	public User viweDetails(@PathVariable("userID") String id) {
+	public String viweDetails(@PathVariable("userID") String id) {
 			return userService.findUserById(id);	
 	}
 	
@@ -64,9 +61,9 @@ public class UserController {
 	}
 	
 	@PatchMapping("/{id}/update/password")
-	public String changePassword(@PathVariable("id") int id,@RequestParam String newPassword)
+	public String changePassword(@PathVariable("id") int id,@RequestParam String oldPassword,@RequestParam String newPassword)
 	{
-		if(userService.changePassword(id, newPassword))
+		if(userService.changePassword(id,oldPassword, newPassword))
 		{
 			return "Password changed successfully";
 		}
@@ -75,9 +72,9 @@ public class UserController {
 	}
 	
 	@PatchMapping("/{id}/update/name")
-	public String changeName(@PathVariable("id") int id,@RequestParam String newPassword)
+	public String changeName(@PathVariable("id") int id,@RequestParam String updatedName)
 	{
-		if(userService.changeName(id, newPassword))
+		if(userService.changeName(id, updatedName))
 		{
 			return "Name changed successfully";
 		}
@@ -86,36 +83,11 @@ public class UserController {
 		
 	}
 	
-//	@PutMapping(path="/update/{userID}",
-//			consumes = MediaType.APPLICATION_JSON_VALUE, 
-//	        produces = MediaType.APPLICATION_JSON_VALUE)
-//	public String updateUser(@PathVariable("userID") String id, @RequestBody User newUser)
-//	{
-//		userService.updateUser(id, newUser);
-//		return "User updated successfully.";
-//	}
-	
-//	@PostMapping(path = "/create", 
-//	        consumes = MediaType.APPLICATION_JSON_VALUE, 
-//	        produces = MediaType.APPLICATION_JSON_VALUE)
-//	public ResponseEntity<User> createUser(@RequestBody User newUser)
-//	{
-//		User user= userService.addUser(newUser);
-//		return new ResponseEntity<>(user,HttpStatus.CREATED);
-//	}
-	
-	
 	@DeleteMapping("/{userID}/delete/")
 	public String deleteAccount(@PathVariable("userID") int userID)
 	{
 		userService.deleteUser(userID);
 		return "Account deleted successfully.";
-	}
-	
-	@GetMapping("/")
-	public List<User> getUserByName(@RequestParam String vendorName)
-	{
-		return userService.findUserByName(vendorName);
 	}
 	
 }

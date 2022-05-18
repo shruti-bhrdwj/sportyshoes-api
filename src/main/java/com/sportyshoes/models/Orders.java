@@ -29,12 +29,10 @@ public class Orders {
 	@UpdateTimestamp
 	private Timestamp date;
 	
-	//@ManyToOne
 	@OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "BY_USER", referencedColumnName = "USER_ID")
     private User user;
-	
-	//@ManyToOne
+
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "PRODUCT_ID", referencedColumnName = "PRODUCT_ID")
     private Product product;
@@ -83,7 +81,6 @@ public class Orders {
 
 	@Override
 	public String toString() {
-		return "Orders [orderNum=" + orderNum + ", date=" + date + ", user=" + user + ", product=" + product + "]";
-	}	
-	
+		return "\nOrder Details:\n[order Number = " + orderNum + "\n Date = " + date + "\n UserID = " + user.getUserid() + "\n Product Details = " + product + " ]";
+	}
 }

@@ -25,29 +25,14 @@ public class UserService {
 			return false;
 	}
 	
-	public List<User> getAllUsers() {
-	     return (List<User>) userRepository.findAll();
+	public String getAllUsers() {
+	     return userRepository.findAll().toString();
 	}
 	
-	public User findUserById(String userid) {
+	public String findUserById(String userid) {
 		int id = Integer.parseInt(userid);
-		return userRepository.findById(id).get();
+		return userRepository.findById(id).get().toString();
 	}
-	
-//	public User addUser(User user) {
-//		return userRepository.save(user);
-//	}
-	
-//	public void updateUser(String userid,User user ) {
-//		int id = Integer.parseInt(userid);
-//		User us=userRepository.findById(id).get();
-//		if(us.getUserid()==id) userRepository.save(user);
-//	}
-	
-	public void deleteUser(int id) {
-		userRepository.deleteById(id);
-	}
-
 
 	public User addUser(String name, String password) {
 		User us = new User();
@@ -57,12 +42,13 @@ public class UserService {
 	}
 
 
-	public boolean changePassword(int id, String newPassword) {
+	public boolean changePassword(int id,String oldPassword, String newPassword) {
 		User us = userRepository.findById(id).get();
-		us.setUserpwd(newPassword);
-		userRepository.save(us);
-		
-		if(userRepository.findById(id).get().getUserpwd().equals(newPassword)) {
+		if (us.getUserpwd().equals(oldPassword)){
+			us.setUserpwd(newPassword);
+			userRepository.save(us);
+		}
+		if(us.getUserpwd().equals(newPassword)) {
 			return true;
 		}else return false;
 	}
@@ -73,20 +59,22 @@ public class UserService {
 		us.setUname(name);
 		userRepository.save(us);
 		
-		if(userRepository.findById(id).get().getUname().equals(name)) {
-			return true;
-		}else return false;
+		if(us.getUname().equals(name))return true;
+		else return false;
 	}
-
-	public List<User> findUserByName(String uname) {
-		List<User> list = (List<User>) userRepository.findAll();
-		List<User> listByName = new ArrayList<>();
+	
+	public String findUserByName(String uname) {
+		Iterable<User> list = userRepository.findAll();
+		ArrayList<User> listByName = new ArrayList<>();
 		for (User us : list) {
 			if(us.getUname().toLowerCase().contains(uname.toLowerCase())) {
 				listByName.add(us);
 			}
 		}
-		return listByName;
-	}	
-
+		return listByName.toString();
+	}
+	
+	public void deleteUser(int id) {
+		userRepository.deleteById(id);
+	}
 }

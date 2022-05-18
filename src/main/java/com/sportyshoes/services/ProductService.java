@@ -84,14 +84,5 @@ public class ProductService {
 		}else return false;
 		
 	}
-//	public Product updateProduct(int pId,Product product ) {
-//	  Product pr=productRepository.findById(pId).get();
-//	  if(pr.getProductId()==pId) {
-//		  productRepository.save(product);
-//	      }else {
-//		     System.out.println("Error: Invalid ProductID");
-//	  }
-//	  return product;
-//   }
 
 }

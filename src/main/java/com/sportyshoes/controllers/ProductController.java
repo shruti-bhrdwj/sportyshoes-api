@@ -62,7 +62,7 @@ public class ProductController {
 	{
 		if(productService.changePname(id, updatedName))
 		{
-			return "Product name changed successfully";
+			return "Product name updated successfully";
 		}
 		else
 			return "Request Failed";
@@ -73,18 +73,18 @@ public class ProductController {
 	{
 		if(productService.changeMSRP(id, updatedMSRP))
 		{
-			return "Product name changed successfully";
+			return "Product MSRP updated successfully";
 		}
 		else
 			return "Request Failed";
 	}
 	
 	@PatchMapping("/{productId}/update/vendor")
-	public String updatePvendor(@PathVariable("productId") int id,@RequestParam String newVendor)
+	public String updatePvendor(@PathVariable("productId") int id,@RequestParam String updatedVendor)
 	{
-		if(productService.changeVendorInfo(id, newVendor))
+		if(productService.changeVendorInfo(id, updatedVendor))
 		{
-			return "Product name changed successfully";
+			return "Product vendor updated successfully";
 		}
 		else
 			return "Request Failed";

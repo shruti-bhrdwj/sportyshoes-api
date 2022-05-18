@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.sportyshoes.models.Admin;
 import com.sportyshoes.services.AdminService;
+import com.sportyshoes.services.OrderService;
+import com.sportyshoes.services.UserService;
 
 @RestController
 @RequestMapping("/api/admin")
@@ -18,6 +20,12 @@ public class AdminController {
 	
 	@Autowired
 	private AdminService admService;
+	
+	@Autowired
+	private UserService uService;
+	
+	@Autowired
+	private OrderService orderService;
 	
 	@PostMapping("/signIn")
 	public String adminLogin(@RequestParam String name, @RequestParam String password)
@@ -31,9 +39,9 @@ public class AdminController {
 	}
 	
 	@PatchMapping("/{id}/update/password")
-	public String changePassword(@PathVariable("id") int id,@RequestParam String newPassword)
+	public String changePassword(@PathVariable("id") int id,@RequestParam String oldPassword,@RequestParam String newPassword)
 	{
-		if(admService.changePassword(id, newPassword))
+		if(admService.changePassword(id, oldPassword, newPassword))
 		{
 			return "Password changed successfully";
 		}
@@ -43,8 +51,26 @@ public class AdminController {
 	}
 	
 	@GetMapping("/id={admID}")
-	public Admin getDetails(@PathVariable("admID") int id) {
+	public Admin getMyDetails(@PathVariable("admID") int id) {
 		return admService.getAdminDetails(id);
+	}
+	
+	@GetMapping("/getUser")
+	public String getUserByName(@RequestParam String uname)
+	{
+		return uService.findUserByName(uname);
+	}
+	
+	@GetMapping("/getUser/{uid}")
+	public String getUserById(@PathVariable String uid)
+	{
+		return uService.findUserById(uid);
+	}
+	
+	@GetMapping("/getAllOrders")
+	public String showOrderList()
+	{
+		return orderService.getAllOrders();
 	}
 
 }

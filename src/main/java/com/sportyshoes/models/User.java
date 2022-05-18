@@ -5,7 +5,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-//import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -22,9 +21,6 @@ public class User {
 	
 	@Column(name = "PASSWORD")
 	private String userpwd;
-	
-	//@ManyToOne
-    //private Orders odr;
 	
 	public User() {}
 	
@@ -61,8 +57,7 @@ public class User {
 
 	@Override
 	public String toString() {
-		return "User [uname=" + uname + ", userId=" + userId + ", userpwd=" + userpwd + "]";
+		return "\nUser Details: [Name = " + uname + ", UserId=" + userId + " ]";
 	}
-
 	
 }

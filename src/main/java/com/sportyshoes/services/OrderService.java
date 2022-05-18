@@ -1,7 +1,5 @@
 package com.sportyshoes.services;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -34,17 +32,13 @@ public class OrderService {
 		od.getOrderNum();
 		orderRepository.save(od);
 		
-		if(orderRepository.save(od)== null) {
-			return false;
-		}else {
-			return true;
-		}
+		if(od.getProduct().equals(pr) && od.getUser().equals(us)) return true;
+		else return false;
+		
 	}
 	
-	public List<Orders> getAllOrders() {
-		return (List<Orders>) orderRepository.findAll();
+	public String getAllOrders() {
+		return orderRepository.findAll().toString();
 	}
-	
-	
 
 }

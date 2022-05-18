@@ -1,2 +1,2 @@
 # sportyshoes-api
-An e-commerce web application using Spring-boot.
+An e-commerce web application created using Spring-boot.

@@ -1,66 +1,43 @@
 mysql> use sportyshoes;
 Database changed
-mysql> select * from admin;
-+----------+----------+--------+
-| ADMIN_ID | PASSWORD | NAME   |
-+----------+----------+--------+
-|        1 | Shruti@S | Shruti |
-+----------+----------+--------+
-1 row in set (0.01 sec)
+mysql> desc users;
++----------+--------------+------+-----+---------+----------------+
+| Field    | Type         | Null | Key | Default | Extra          |
++----------+--------------+------+-----+---------+----------------+
+| USER_ID  | int          | NO   | PRI | NULL    | auto_increment |
+| PASSWORD | varchar(255) | YES  |     | NULL    |                |
+| NAME     | varchar(255) | YES  |     | NULL    |                |
++----------+--------------+------+-----+---------+----------------+
+3 rows in set (0.10 sec)
 
-mysql> select * from users;
-+---------+--------------+---------------+
-| USER_ID | PASSWORD     | NAME          |
-+---------+--------------+---------------+
-|       1 | shikha123    | Shikha        |
-|       2 | janvi123     | Janvi         |
-|       3 | Seeta1234    | Seeta         |
-|       4 | sakshi@13    | Sakshi Mishra |
-|       5 | Ram1234      | Ram           |
-|       6 | Shruti123    | Shruti Sharma |
-|      12 | Taehyung123  | Taehyung      |
-|      17 | Jimin@123    | Jimin         |
-|      18 | Jungkook@123 | Jungkook      |
-|      19 | ap123@5      | Ananya        |
-|      21 | rm123@05     | RM            |
-|      35 | rm123@05     | RM            |
-|      37 | SinghS@5     | sakshi singh  |
-|      40 | gauri@26     | Gauri Jaimani |
-+---------+--------------+---------------+
-14 rows in set (0.02 sec)
+mysql> desc admin;
++----------+--------------+------+-----+---------+----------------+
+| Field    | Type         | Null | Key | Default | Extra          |
++----------+--------------+------+-----+---------+----------------+
+| ADMIN_ID | int          | NO   | PRI | NULL    | auto_increment |
+| PASSWORD | varchar(255) | YES  |     | NULL    |                |
+| NAME     | varchar(255) | YES  |     | NULL    |                |
++----------+--------------+------+-----+---------+----------------+
+3 rows in set (0.00 sec)
 
-mysql> select * from products;
-+------------+------+--------------------------------------+-------------------+
-| PRODUCT_ID | MSRP | PRODUCT_NAME                         | VENDOR_INFO       |
-+------------+------+--------------------------------------+-------------------+
-|          1 | 1000 | Nike athelete shoes                  | NIKE              |
-|          2 | 1899 | ADIDAS women gym shoes               | ADIDAS            |
-|          3 | 1798 | Columbus jogging shoes               | Columnus          |
-|          4 | 2999 | updated name: Bata casual shoes      | BATA              |
-|          5 | 1499 | Performax highend shoes              | Performax         |
-|          6 |  599 | Bata women High-heels                | BATA              |
-|          7 | 1399 | Performax football shoes             | Performax         |
-|          8 |  899 | Nike forest Boots                    | NIKE              |
-|          9 |  799 | Columnus women wedges                | Columnus          |
-|         10 |  999 | Columnus men flats                   | Columnus          |
-|         11 |  999 | Columnus unisex flip-flops           | Columnus          |
-|         12 | 1599 | Performax comfort slippers           | Performax         |
-|         13 | 1899 | Nike women partywear boots           | NIKE              |
-|         14 |  599 | Performax budget slippers            | Performax         |
-|         15 |  499 | Adidas Everyday slippers             | ADIDAS            |
-|         31 | 1299 | Nike women stelatoes                 | NIKE              |
-|         34 | 2999 | Light-comfort wedges by Hush Puppies | Hush puppies (HP) |
-|         38 | 4999 | Snowflakes Boots                     | Hush Puppies      |
-+------------+------+--------------------------------------+-------------------+
-18 rows in set (0.01 sec)
-
-mysql> select * from customer_orders;
-+--------------+---------------------+---------+------------+
-| ORDER_NUMBER | DATE                | BY_USER | PRODUCT_ID |
-+--------------+---------------------+---------+------------+
-|           30 | 2022-05-15 15:05:48 |       5 |          6 |
-|           33 | 2022-05-15 22:31:56 |      17 |          1 |
-|           36 | 2022-05-17 16:22:08 |       1 |          1 |
-|           41 | 2022-05-19 00:08:28 |       2 |          1 |
-+--------------+---------------------+---------+------------+
+mysql> desc customer_orders;
++--------------+-----------+------+-----+-------------------+-------------------+
+| Field        | Type      | Null | Key | Default           | Extra             |
++--------------+-----------+------+-----+-------------------+-------------------+
+| ORDER_NUMBER | int       | NO   | PRI | NULL              | auto_increment    |
+| DATE         | timestamp | NO   |     | CURRENT_TIMESTAMP | DEFAULT_GENERATED |
+| BY_USER      | int       | YES  | MUL | NULL              |                   |
+| PRODUCT_ID   | int       | YES  | MUL | NULL              |                   |
++--------------+-----------+------+-----+-------------------+-------------------+
 4 rows in set (0.01 sec)
+
+mysql> desc products;
++--------------+--------------+------+-----+---------+----------------+
+| Field        | Type         | Null | Key | Default | Extra          |
++--------------+--------------+------+-----+---------+----------------+
+| PRODUCT_ID   | int          | NO   | PRI | NULL    | auto_increment |
+| MSRP         | int          | YES  |     | NULL    |                |
+| PRODUCT_NAME | varchar(255) | YES  |     | NULL    |                |
+| VENDOR_INFO  | varchar(255) | YES  |     | NULL    |                |
++--------------+--------------+------+-----+---------+----------------+
+4 rows in set (0.00 sec)
